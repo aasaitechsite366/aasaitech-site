@@ -1,4 +1,4 @@
 1:"$Sreact.fragment"
 2:I[39756,["/aasaitech-site/_next/static/chunks/42879de7b8087bc9.js"],"default"]
 3:I[37457,["/aasaitech-site/_next/static/chunks/42879de7b8087bc9.js"],"default"]
-0:{"buildId":"BYfWv6C9EypNT8L0j_rRx","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"9R_A6Vwp-ZsNuUsxdtG80","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}
