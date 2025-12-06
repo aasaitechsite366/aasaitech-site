@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "deploy": "npm run build && touch out/.nojekyll && gh-pages -d out"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build:deploy": "cross-env NEXT_PUBLIC_BASE_PATH=/aasaitech-site next build",
+    "deploy": "npm run build:deploy && echo. > out\\.nojekyll && gh-pages -d out -b gh-pages"
   },
   "dependencies": {
     "framer-motion": "^12.23.25",
@@ -21,6 +22,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "gh-pages": "^6.3.0",
