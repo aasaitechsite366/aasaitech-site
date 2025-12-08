@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "build:deploy": "cross-env NEXT_PUBLIC_BASE_PATH=/aasaitech-site next build",
+    "build:deploy": "cross-env NEXT_PUBLIC_BASE_PATH= next build",
     "deploy": "npm run build:deploy && powershell -Command \"New-Item -Path 'out\\.nojekyll' -ItemType File -Force\" && gh-pages -d out -b gh-pages --dotfiles"
   },
   "dependencies": {
