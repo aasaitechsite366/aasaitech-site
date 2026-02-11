@@ -9,12 +9,15 @@ import {
   Cpu,
   FileText,
   Lock,
+  Mail, // Added for Contact Icon
+  MessageSquare, // Added for Contact Icon
   MoveUpRight,
-  Server,
+  Send, // Added for Submit Button  Server,
   Shield,
   X,
   Zap,
 } from "lucide-react";
+import Image from "next/image"; // Added for logo.png
 import { useEffect, useState } from "react";
 
 const capabilities = [
@@ -24,7 +27,7 @@ const capabilities = [
     desc: "Sub-millisecond inference at the edge for high-speed sortation.",
     icon: <Cpu size={20} className="text-cyan-400" />,
     modal: "robotic_diag",
-    image: "/images/robotic-diag.png", // Use your generated image path
+    image: "/images/robotic-diag.png",
   },
   {
     title: "Sub-Fab Monitoring",
@@ -120,6 +123,130 @@ const CapabilityGallery = ({ setActiveModal }) => {
         </div>
       </div>
     </section>
+  );
+};
+
+// --- NEW SUB-COMPONENT: Contact Us Modal Content ---
+const ContactModalContent = () => {
+  const [status, setStatus] = useState("idle"); // idle, sending, sent
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    urgency: "Standard Inquiry",
+    message: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    // Simulate network delay for "Cyberpunk" feel
+    setTimeout(() => {
+      // Construct Mailto Link
+      const subject = `AAS.AI Inquiry: ${formData.urgency} from ${formData.name}`;
+      const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0AUrgency: ${formData.urgency}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
+      
+      window.location.href = `mailto:anaghaagilesystems@gmail.com?subject=${subject}&body=${body}`;
+      
+      setStatus("sent");
+    }, 1500);
+  };
+
+  if (status === "sent") {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-300">
+        <div className="w-16 h-16 rounded-full bg-cyan-500/20 flex items-center justify-center mb-4 border border-cyan-500 animate-pulse">
+          <Send className="w-8 h-8 text-cyan-400" />
+        </div>
+        <h3 className="text-2xl font-bold mb-2 text-white">Transmission Initiated</h3>
+        <p className="text-gray-400 max-w-xs">
+          Your secure packet has been routed to our terminal. Your default mail client should now be open.
+        </p>
+        <button 
+          onClick={() => setStatus("idle")}
+          className="mt-6 text-xs font-mono text-cyan-500 hover:text-white transition-colors uppercase tracking-widest border-b border-cyan-500/30 pb-1"
+        >
+          Send_New_Packet
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-4 p-4 bg-cyan-500/5 border-l-2 border-cyan-500 rounded-r-lg">
+        <MessageSquare className="text-cyan-400" size={24} />
+        <div>
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">Secure Channel Open</h3>
+          <p className="text-xs text-cyan-500/70 font-mono">ENCRYPTION: AES-256 // DEST: HQ</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Identity</label>
+            <input 
+              required
+              type="text" 
+              placeholder="Dr. User" 
+              className="w-full bg-black border border-white/10 p-3 rounded-lg focus:border-cyan-500 outline-none transition-all text-white text-sm"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Priority Level</label>
+            <select 
+              className="w-full bg-black border border-white/10 p-3 rounded-lg focus:border-cyan-500 outline-none transition-all text-gray-300 text-sm"
+              value={formData.urgency}
+              onChange={(e) => setFormData({...formData, urgency: e.target.value})}
+            >
+              <option>Standard Inquiry</option>
+              <option>Technical Support</option>
+              <option>Partnership Request</option>
+              <option className="text-red-400">CRITICAL_INCIDENT</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Comms Endpoint (Email)</label>
+          <input 
+            required
+            type="email" 
+            placeholder="contact@organization.com" 
+            className="w-full bg-black border border-white/10 p-3 rounded-lg focus:border-cyan-500 outline-none transition-all text-white text-sm"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Payload (Message)</label>
+          <textarea 
+            required
+            rows={4}
+            placeholder="Describe your operational requirements..." 
+            className="w-full bg-black border border-white/10 p-3 rounded-lg focus:border-cyan-500 outline-none transition-all text-white text-sm resize-none"
+            value={formData.message}
+            onChange={(e) => setFormData({...formData, message: e.target.value})}
+          />
+        </div>
+
+        <button 
+          disabled={status === "sending"}
+          type="submit"
+          className="w-full bg-white text-black hover:bg-cyan-400 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all uppercase tracking-widest text-xs mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {status === "sending" ? (
+             <span className="animate-pulse">ENCRYPTING_PACKET...</span>
+          ) : (
+             <>Transmit Message <ArrowRight size={16} /></>
+          )}
+        </button>
+      </form>
+    </div>
   );
 };
 
@@ -660,6 +787,10 @@ const App = () => {
       title: "CORE_MESH_TELEMETRY",
       component: <CoreTelemetryContent />,
     },
+    contact: {
+      title: "SECURE_TRANSMISSION_UPLINK",
+      component: <ContactModalContent />,
+    },
   };
 
   const Modal = ({ type, onClose }) => {
@@ -724,8 +855,14 @@ const App = () => {
             className="flex items-center gap-2 group cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            <div className="w-8 h-8 bg-gradient-to-tr from-cyan-500 to-purple-600 rounded flex items-center justify-center text-black font-bold font-mono">
-              A
+            {/* UPDATED: Logo Integration */}
+            <div className="relative w-8 h-8 rounded overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="AAS.AI Logo"
+                fill
+                className="object-cover"
+              />
             </div>
             <span className="text-xl font-bold tracking-tight text-white">
               AAS<span className="text-gray-500">.AI</span>
@@ -741,6 +878,13 @@ const App = () => {
                 {item}
               </a>
             ))}
+            {/* ADDED: Contact Us Trigger */}
+            <button
+              onClick={() => setActiveModal("contact")}
+              className="text-xs font-mono uppercase tracking-widest text-gray-400 hover:text-cyan-400 transition-colors"
+            >
+              Contact
+            </button>
             <button
               onClick={() => setActiveModal("brief")}
               className="px-5 py-2 text-xs font-mono bg-cyan-500/10 border border-cyan-500/30 rounded text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all"
@@ -938,7 +1082,15 @@ const App = () => {
               className="flex items-center gap-2 mb-6 cursor-pointer"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
-              <div className="w-6 h-6 bg-white rounded-sm"></div>
+              {/* UPDATED: Logo Integration in Footer */}
+              <div className="relative w-6 h-6 rounded-sm overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="AAS.AI Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <span className="text-lg font-bold text-white">AAS.AI</span>
             </div>
             <p className="text-gray-500 text-sm mb-6">
@@ -946,11 +1098,11 @@ const App = () => {
               deterministic AI and Edge Intelligence.
             </p>
             <div className="text-[10px] font-mono text-gray-700 uppercase tracking-widest">
-              v4.2.0-PROD // BENGALURU // SILICON VALLEY
+              v4.2.0-PROD // BENGALURU // SILICON VALLEY OF INDIA
             </div>
           </div>
           <div className="text-gray-500 text-sm font-mono">
-            © 2026 AAS.AI SECURE SYSTEMS. ALL RIGHTS RESERVED.
+            © 2026 ANAGHA AGILE SYSTEMS PVT LTD. ALL RIGHTS RESERVED.
           </div>
         </div>
       </footer>
