@@ -1,24 +1,49 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Configuration for Tailwind v4 variables if needed */
+@theme {
+  --color-accent-teal: #22d3ee;
+  --color-accent-purple: #a855f7;
+}
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 5, 5, 5;
-  --background-end-rgb: 10, 10, 10;
+  --background: #050505;
+  --foreground: #ffffff;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: #050505;
+/* Force dark background immediately to prevent layout flash */
+html, body {
+  background-color: #050505 !important;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
-/* Marquee Animation Support */
+/* Custom UI Layers - Fixed for Tailwind v4 @apply logic */
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Utility for Marquee Animation */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
 .animate-marquee {
-  display: flex;
+  display: flex !important;
+  width: max-content;
   animation: marquee 30s linear infinite;
+}
+
+/* Spotlight Effect logic */
+.spotlight {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    rgba(34, 211, 238, 0.08), 
+    transparent 40%
+  );
 }
